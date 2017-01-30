@@ -1,13 +1,14 @@
 /*
+ * Modified version of Paul Griffiths, 1999 echo program by Samman Bikram
+ * Thapa of Howard University. Modified for assignment 1 of Neworks and Web
+ * Programming Class 2017 spring session taught by Dr. Li.
  *
- *   ECHOSERV.C
- *     ==========
- *       (c) Paul Griffiths, 1999
- *         Email: mail@paulgriffiths.net
+ * Author: Samman Bikram Thapa (samman.thapa@bison.howard.edu)
  *
- *             Simple TCP/IP echo server.
+ * Modified TCP/IP echo server.
  *
- *             */
+ *
+ */
 
 
 #include <sys/socket.h>       /*  socket definitions        */
@@ -133,6 +134,19 @@ int main(int argc, char *argv[]) {
                 // send message
                 send(conn_s, msg, strlen(msg), 0);
             }
+
+            /* Read the content of the file and send content */
+            if (strncmp(buffer, "FILE", 4) == 0)
+            {
+                // get the content
+                char content[data_len - 5];
+                memcpy (content, &buffer[5], data_len - 6);
+                content[data_len - 6] = '\0';
+
+                printf("\n%s\n",content);
+
+            }
+
         }
         /*  Close the connected socket after client disconnects */
 
