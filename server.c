@@ -143,8 +143,17 @@ int main(int argc, char *argv[]) {
                 memcpy (content, &buffer[5], data_len - 6);
                 content[data_len - 6] = '\0';
 
-                printf("\n%s\n",content);
-
+                // look if there is a file called content in the directory
+                FILE * fpointer;
+                if ((fpointer = fopen(content, "r")) == NULL)
+                {
+                    char return_val[] = "9\nNOT FOUND"; 
+                    send(conn_s, return_val, strlen(return_val), 0);
+                }
+                else
+                {
+                    printf("hi hi");
+                }
             }
 
         }
