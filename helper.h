@@ -20,7 +20,7 @@
 #include <unistd.h>             /*  for ssize_t data type  */
 #include <sys/socket.h>
 #include <errno.h>
-
+#include <string.h>
 #define LISTENQ        (1024)   /*  Backlog for listen()   */
 
 

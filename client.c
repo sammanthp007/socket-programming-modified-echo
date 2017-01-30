@@ -15,7 +15,7 @@
 #include <arpa/inet.h>        /*  inet (3) funtions         */
 #include <unistd.h>           /*  misc. UNIX functions      */
 
-#include "client-helper.h"           /*  Our own helper functions  */
+#include "helper.h"           /*  Our own helper functions  */
 
 #include <stdlib.h>
 #include <string.h>
