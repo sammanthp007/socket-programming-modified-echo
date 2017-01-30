@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     char     *endptr;                /*  for strtol()              */
     struct sockaddr_in clientaddr;  // client address structure
     int sockaddr_len = sizeof(struct sockaddr_in);  // size for bind and accept
-
+    int data_len;               // length of message from recv is stored here
 
     /*  Get port number from the command line, and
      *          set to default port if no arguments were supplied  */
@@ -100,15 +100,21 @@ int main(int argc, char *argv[]) {
 
         printf("New Client connected from port %d and IP %s\n", ntohs(clientaddr.sin_port), inet_ntoa(clientaddr.sin_addr));
 
-
         /*  Retrieve an input line from the connected socket */
-        Readline(conn_s, buffer, MAX_LINE-1);
+       
+        data_len = recv(conn_s, buffer, MAX_LINE, 0);
 
+        printf("received the following data of length %d\n: %s", data_len, buffer);
         /* Capitalize and send message */
         if (strncmp(buffer, "CAP", 3) == 0)
         {
-            printf(buffer);
-            Writeline(conn_s, buffer, strlen(buffer));
+            char message[strlen(buffer)];
+            char size_of_buffer = strlen(buffer) + '0';
+            strcat(message, "\n");
+            strcat(message, buffer);
+            
+            send(conn_s, buffer, data_len, 0);
+            printf("Sent message: %s of size %d", buffer, strlen(buffer));
         }
 
         /*  Close the connected socket  */

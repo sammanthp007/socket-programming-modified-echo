@@ -102,19 +102,19 @@ int main(int argc, char *argv[]) {
         if (strlen(buffer) == 2 && strncmp(buffer, "s", 1) == 0)
         {
             printf("Enter message in form: \n");
+            // fgets also takes in the last \n 
             fgets(buffer, MAX_LINE, stdin);
             
             /* Send message to server in the form "CAP\nxxx\n" */
             char message[MAX_LINE + 10];
             strcpy(message, "CAP\n");
             strcat(message, buffer);
-            strcat(message, "\n");
-            Writeline(conn_s, message, strlen(buffer));
+           
+            send(conn_s, message, strlen(message), 0);
             
             /* receive message from server */
-            Readline(conn_s, buffer, MAX_LINE - 1);
-            
-            printf("Server Response: %s\n", buffer);
+            int data_len = recv(conn_s, message, MAX_LINE + 10, 0);
+            printf("Server Response: %s", message);
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "t", 1) == 0)
         {
