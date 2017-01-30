@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
         printf("Enter the string to echo: ");
         fgets(buffer, MAX_LINE, stdin);
 
-        if (strncmp(buffer, "ss", 1))
+        if (strlen(buffer) == 2 && strncmp(buffer, "s", 1) == 0)
         {
             printf("Came in here");
         }
@@ -112,6 +112,7 @@ int main(int argc, char *argv[]) {
 
 
         /*  Output echoed string  */
+        printf("%d <- buffer size\n", strlen(buffer));
 
         printf("Echo response: %s\n", buffer);
         }
