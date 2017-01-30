@@ -100,41 +100,49 @@ int main(int argc, char *argv[]) {
 
         printf("New Client connected from port %d and IP %s\n", ntohs(clientaddr.sin_port), inet_ntoa(clientaddr.sin_addr));
 
-        /*  Retrieve an input line from the connected socket */
-       
-        data_len = recv(conn_s, buffer, MAX_LINE, 0);
+        data_len = 1;
 
-        /* Capitalize and send message */
-        if (strncmp(buffer, "CAP", 3) == 0)
+        // data_len is 0 when orderly shutdown happens
+        while (data_len)
         {
-            // get the content
-            char content[data_len - 4];
-            memcpy (content, &buffer[4], data_len - 5);
-            content[data_len - 4] = '\0';
+            /*  Retrieve an input line from the connected socket */
+            data_len = recv(conn_s, buffer, MAX_LINE, 0);
 
-            // capitalize the content
-            Cap(content);
+            // Because noise can get in during transmission
+            buffer[data_len] = '\0';
 
-            printf(">>>>> %s \n",content);
+            /* Capitalize and send message */
+            if (strncmp(buffer, "CAP", 3) == 0)
+            {
+                // get the content
+                char content[data_len - 4];
+                memcpy (content, &buffer[4], data_len - 5);
+                content[data_len - 5] = '\0';
 
-            // create a message to send
-            char msg[data_len];
-            char size_of_content[10];
-            int char_in_content = strlen(content);
-            sprintf(msg, "%d", char_in_content);
-            strcat(msg, "\n");
-            strcat(msg, content);
-            
-            // send message
-            send(conn_s, msg, strlen(msg), 0);
+                // capitalize the content
+                Cap(content);
+
+                // create a message to send
+                char msg[data_len];
+                char size_of_content[10];
+                int char_in_content = strlen(content);
+                sprintf(msg, "%d", char_in_content);
+                strcat(msg, " ");
+                strcat(msg, content);
+
+                // send message
+                send(conn_s, msg, strlen(msg), 0);
+            }
         }
+        /*  Close the connected socket after client disconnects */
 
-        /*  Close the connected socket  */
+        printf("Client Disconnecting \n");
 
         if ( close(conn_s) < 0 ) {
             fprintf(stderr, "ECHOSERV: Error calling close()\n");
             exit(EXIT_FAILURE);
         }
+
     }
 }
 

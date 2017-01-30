@@ -104,17 +104,25 @@ int main(int argc, char *argv[]) {
             printf("Enter message in form: \n");
             // fgets also takes in the last \n 
             fgets(buffer, MAX_LINE, stdin);
-            
+           
+            int buffer_len = strlen(buffer);
+            buffer[buffer_len + 1] = '\0';
+
             /* Send message to server in the form "CAP\nxxx\n" */
             char message[MAX_LINE + 10];
             strcpy(message, "CAP\n");
             strcat(message, buffer);
-           
+
+            message[buffer_len + 4] = '\0';
+            
             send(conn_s, message, strlen(message), 0);
             
             /* receive message from server */
             int data_len = recv(conn_s, message, MAX_LINE + 10, 0);
-            printf("Server Response: %s", message);
+
+            // because noise gets added during transmission
+            message[data_len] = '\0';
+            printf("Server Response: %s \n", message);
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "t", 1) == 0)
         {
