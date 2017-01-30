@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
                 char size_of_content[10];
                 int char_in_content = strlen(content);
                 sprintf(msg, "%d", char_in_content);
-                strcat(msg, " ");
+                strcat(msg, "\n");
                 strcat(msg, content);
 
                 // send message
@@ -158,11 +158,14 @@ int main(int argc, char *argv[]) {
                     {
                         // send msg here
                         char msg[strlen(filecontent)];
+                        filecontent[strlen(filecontent) - 1] = '\0';
+                        printf("|||%s|||%d|||", filecontent, strlen(filecontent));
                         int char_in_file = strlen(filecontent);
                         sprintf(msg, "%d", char_in_file);
-                        strcat(msg, " ");
+                        strcat(msg, "\n");
                         strcat(msg, filecontent);
 
+                        printf("|||||%s||||%d", msg, strlen(msg));
                         send(conn_s, msg, strlen(msg), 0);
                         free(filecontent);
                     }
@@ -172,7 +175,7 @@ int main(int argc, char *argv[]) {
         }
         /*  Close the connected socket after client disconnects */
 
-        printf("Client Disconnecting \n");
+        printf("Client Disconnected \n");
 
         if ( close(conn_s) < 0 ) {
             fprintf(stderr, "ECHOSERV: Error calling close()\n");
