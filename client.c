@@ -96,25 +96,34 @@ int main(int argc, char *argv[]) {
     {
         /* Prompt user */
                 
-        printf("Enter the string to echo: ");
+        printf("Enter command (s for sending message, t for sending file q to exit): \n");
         fgets(buffer, MAX_LINE, stdin);
 
         if (strlen(buffer) == 2 && strncmp(buffer, "s", 1) == 0)
         {
-            printf("Came in here");
+            printf("Enter message in form 'CAP\\nxxx\\n': \n");
+            
+        }
+        else if (strlen(buffer) == 2 && strncmp(buffer, "t", 1) == 0)
+        {
+            printf("Enter the name of the file as 'FILE\\nxxx\\n'\n");        
+        }
+        else if (strlen(buffer) == 2 && strncmp(buffer, "q", 1) == 0)
+        {
+            return EXIT_SUCCESS;
         }
         else
         {
         /*  Send string to echo server, and retrieve response  */
 
-        Writeline(conn_s, buffer, strlen(buffer));
-        Readline(conn_s, buffer, MAX_LINE-1);
+        /* Writeline(conn_s, buffer, strlen(buffer)); */
+        /* Readline(conn_s, buffer, MAX_LINE-1); */
 
 
         /*  Output echoed string  */
-        printf("%d <- buffer size\n", strlen(buffer));
+        /* printf("%d <- buffer size\n", strlen(buffer)); */
 
-        printf("Echo response: %s\n", buffer);
+        /* printf("Echo response: %s\n", buffer); */
         }
     }
 
