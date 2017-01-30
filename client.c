@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
     {
         /* Prompt user */
                 
-        printf("Enter command (s send message; t send file; q to exit): \n");
+        printf("Enter s for message; t for file; q to exit): \n");
         fgets(buffer, MAX_LINE, stdin);
 
         if (strlen(buffer) == 2 && strncmp(buffer, "s", 1) == 0)
@@ -105,23 +105,20 @@ int main(int argc, char *argv[]) {
             fgets(buffer, MAX_LINE, stdin);
             
             /* Send message to server in the form "CAP\nxxx\n" */
-            char message[] = "CAP\n";
+            char message[MAX_LINE + 10];
+            strcpy(message, "CAP\n");
             strcat(message, buffer);
             strcat(message, "\n");
-            // Writeline(conn_s, buffer, strlen(buffer));
-            
+            Writeline(conn_s, message, strlen(buffer));
             
             /* receive message from server */
-            // Readline(conn_s, buffer, MAX_LINE - 1);
+            Readline(conn_s, buffer, MAX_LINE - 1);
             
-            /* display the received message */
-            printf("Server Response: %s\n", message);
-
-            
+            printf("Server Response: %s\n", buffer);
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "t", 1) == 0)
         {
-            printf("Enter the name of the file as 'FILE\\nxxx\\n'\n");        
+            printf("Enter name of the file as 'FILE\\nxxx\\n'\n");
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "q", 1) == 0)
         {
