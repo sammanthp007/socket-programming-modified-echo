@@ -23,6 +23,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>         // for malloc and free
 
 #define LISTENQ        (1024)   /*  Backlog for listen()   */
 
