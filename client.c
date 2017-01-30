@@ -1,13 +1,13 @@
 /*
- * Modified version of Paul Griffiths, 1999 echo program by Samman Bikram 
+ * Modified version of Paul Griffiths, 1999 echo program by Samman Bikram
  * Thapa of Howard University. Modified for assignment 1 of Neworks and Web
  * Programming Class 2017 spring session taught by Dr. Li.
- * 
+ *
  * Author: Samman Bikram Thapa (samman.thapa@bison.howard.edu)
  *
  * Modified TCP/IP echo client.
  *
- *             
+ *
  */
 
 
@@ -92,21 +92,30 @@ int main(int argc, char *argv[]) {
     }
 
 
-    /*  Get string to echo from user  */
+    while (1)
+    {
+        /* Prompt user */
+                
+        printf("Enter the string to echo: ");
+        fgets(buffer, MAX_LINE, stdin);
 
-    printf("Enter the string to echo: ");
-    fgets(buffer, MAX_LINE, stdin);
+        if (strncmp(buffer, "ss", 1))
+        {
+            printf("Came in here");
+        }
+        else
+        {
+        /*  Send string to echo server, and retrieve response  */
+
+        Writeline(conn_s, buffer, strlen(buffer));
+        Readline(conn_s, buffer, MAX_LINE-1);
 
 
-    /*  Send string to echo server, and retrieve response  */
+        /*  Output echoed string  */
 
-    Writeline(conn_s, buffer, strlen(buffer));
-    Readline(conn_s, buffer, MAX_LINE-1);
-
-
-    /*  Output echoed string  */
-
-    printf("Echo response: %s\n", buffer);
+        printf("Echo response: %s\n", buffer);
+        }
+    }
 
     return EXIT_SUCCESS;
 }
