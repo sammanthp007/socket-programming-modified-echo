@@ -1,13 +1,14 @@
 /*
+ * Modified version of Paul Griffiths, 1999 echo program by Samman Bikram 
+ * Thapa of Howard University. Modified for assignment 1 of Neworks and Web
+ * Programming Class 2017 spring session taught by Dr. Li.
+ * 
+ * Author: Samman Bikram Thapa (samman.thapa@bison.howard.edu)
  *
- *   ECHOCLNT.C
- *     ==========
- *       (c) Paul Griffiths, 1999
- *         Email: mail@paulgriffiths.net
+ * Modified TCP/IP echo client.
  *
- *             Simple TCP/IP echo client.
- *
- *             */
+ *             
+ */
 
 
 #include <sys/socket.h>       /*  socket definitions        */
