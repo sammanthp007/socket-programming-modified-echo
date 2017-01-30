@@ -11,22 +11,8 @@
  */
 
 
-#include <sys/socket.h>       /*  socket definitions        */
-#include <sys/types.h>        /*  socket types              */
-#include <arpa/inet.h>        /*  inet (3) funtions         */
-#include <unistd.h>           /*  misc. UNIX functions      */
 
 #include "helper.h"           /*  Our own helper functions  */
-
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-
-/*  Global constants  */
-
-#define MAX_LINE           (1000)
-
 
 /*  Function declarations  */
 
@@ -86,7 +72,7 @@ int main(int argc, char *argv[]) {
 
     /*  connect() to the remote echo server  */
 
-    if ( connect(conn_s, (struct sockaddr *) &servaddr, sizeof(servaddr) ) < 0 ) {
+    if (connect(conn_s,(struct sockaddr *)&servaddr, sizeof(servaddr)) < 0 ) {
         printf("ECHOCLNT: Error calling connect()\n");
         exit(EXIT_FAILURE);
     }
