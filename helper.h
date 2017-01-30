@@ -21,6 +21,9 @@
 #include <sys/socket.h>
 #include <errno.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdio.h>
+
 #define LISTENQ        (1024)   /*  Backlog for listen()   */
 
 
@@ -28,7 +31,22 @@
 
 ssize_t Readline(int fd, void *vptr, size_t maxlen);
 ssize_t Writeline(int fc, const void *vptr, size_t maxlen);
+void Cap(char []);
 
+void Cap(char string[]){
+    int i;
+    int x = strlen(string); // get the length of the whole string.
+    if (isalpha(string[0]))
+    {
+        string[0] = toupper(string[0]);
+    }
+    for (i=1;i<x;i++){
+        if (isalpha(string[i]) && string[i-1] == ' '){
+            // only first letters of a word.
+            string[i]= toupper(string[i]);
+        }
+    }
+}
 
 
 

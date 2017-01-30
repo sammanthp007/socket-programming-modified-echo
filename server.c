@@ -104,17 +104,29 @@ int main(int argc, char *argv[]) {
        
         data_len = recv(conn_s, buffer, MAX_LINE, 0);
 
-        printf("received the following data of length %d\n: %s", data_len, buffer);
         /* Capitalize and send message */
         if (strncmp(buffer, "CAP", 3) == 0)
         {
-            char message[strlen(buffer)];
-            char size_of_buffer = strlen(buffer) + '0';
-            strcat(message, "\n");
-            strcat(message, buffer);
+            // get the content
+            char content[data_len - 4];
+            memcpy (content, &buffer[4], data_len - 5);
+            content[data_len - 4] = '\0';
+
+            // capitalize the content
+            Cap(content);
+
+            printf(">>>>> %s \n",content);
+
+            // create a message to send
+            char msg[data_len];
+            char size_of_content[10];
+            int char_in_content = strlen(content);
+            sprintf(msg, "%d", char_in_content);
+            strcat(msg, "\n");
+            strcat(msg, content);
             
-            send(conn_s, buffer, data_len, 0);
-            printf("Sent message: %s of size %d", buffer, strlen(buffer));
+            // send message
+            send(conn_s, msg, strlen(msg), 0);
         }
 
         /*  Close the connected socket  */
