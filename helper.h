@@ -18,7 +18,6 @@
 
 
 #include <unistd.h>             /*  for ssize_t data type  */
-#include <sys/socket.h>
 #include <errno.h>
 #include <string.h>
 #include <ctype.h>
@@ -33,6 +32,7 @@
 /*  Global constants  */
 #define LISTENQ        (1024)   /*  Backlog for listen()   */
 #define MAX_LINE           (1000)
+#define ECHO_PORT          (2002)
 
 
 /*  Function declarations  */

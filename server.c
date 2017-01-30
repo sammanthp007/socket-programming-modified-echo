@@ -11,22 +11,7 @@
  */
 
 
-#include <sys/socket.h>       /*  socket definitions        */
-#include <sys/types.h>        /*  socket types              */
-#include <arpa/inet.h>        /*  inet (3) funtions         */
-#include <unistd.h>           /*  misc. UNIX functions      */
-
 #include "helper.h"           /*  our own helper functions  */
-
-#include <stdlib.h>
-#include <stdio.h>
-
-
-/*  Global constants  */
-
-#define ECHO_PORT          (2002)
-#define MAX_LINE           (1000)
-
 
 int main(int argc, char *argv[]) {
     int       list_s;                /*  listening socket          */
@@ -37,7 +22,7 @@ int main(int argc, char *argv[]) {
     char     *endptr;                /*  for strtol()              */
     struct sockaddr_in clientaddr;  // client address structure
     int sockaddr_len = sizeof(struct sockaddr_in);  // size for bind and accept
-    int data_len;               // length of message from recv is stored here
+    int data_len;         // length of message from recv is stored here
 
     /*  Get port number from the command line, and
      *          set to default port if no arguments were supplied  */
@@ -94,7 +79,7 @@ int main(int argc, char *argv[]) {
     while ( 1 ) {
 
         /*  Wait for a connection, then accept() it  */
-        if ( (conn_s = accept(list_s, (struct sockaddr *)&clientaddr, &sockaddr_len) ) < 0 ) {
+        if ((conn_s = accept(list_s,(struct sockaddr *)&clientaddr,&sockaddr_len)) < 0) {
             fprintf(stderr, "ECHOSERV: Error calling accept()\n");
             exit(EXIT_FAILURE);
         }
