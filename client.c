@@ -141,6 +141,13 @@ int main(int argc, char *argv[]) {
             message[buffer_len + 5] = '\0';
             
             send(conn_s, message, strlen(message), 0);
+
+            /* receive message from server */
+            int data_len = recv(conn_s, message, MAX_LINE + 10, 0);
+
+            // because noise gets added during transmission
+            message[data_len] = '\0';
+            printf("Server Response:\n %s", message);
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "q", 1) == 0)
         {
