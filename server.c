@@ -152,7 +152,20 @@ int main(int argc, char *argv[]) {
                 }
                 else
                 {
-                    printf("hi hi");
+                    // get the content of the file
+                    char *filecontent = ReadFile(content);
+                    if (filecontent)
+                    {
+                        // send msg here
+                        char msg[strlen(filecontent)];
+                        int char_in_file = strlen(filecontent);
+                        sprintf(msg, "%d", char_in_file);
+                        strcat(msg, " ");
+                        strcat(msg, filecontent);
+
+                        send(conn_s, msg, strlen(msg), 0);
+                        free(filecontent);
+                    }
                 }
             }
 

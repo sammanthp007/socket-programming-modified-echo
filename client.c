@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
 
             // because noise gets added during transmission
             message[data_len] = '\0';
-            printf("Server Response:\n %s", message);
+            printf("Server Response:\n%s\n", message);
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "q", 1) == 0)
         {
