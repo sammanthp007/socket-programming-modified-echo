@@ -126,7 +126,21 @@ int main(int argc, char *argv[]) {
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "t", 1) == 0)
         {
-            printf("Enter name of the file as 'FILE\\nxxx\\n'\n");
+            printf("Enter file name: \n");
+            // fgets also takes in the last \n 
+            fgets(buffer, MAX_LINE, stdin);
+           
+            int buffer_len = strlen(buffer);
+            buffer[buffer_len + 1] = '\0';
+
+            /* Send message to server in the form "FILE\nxxx\n" */
+            char message[MAX_LINE + 10];
+            strcpy(message, "FILE\n");
+            strcat(message, buffer);
+
+            message[buffer_len + 5] = '\0';
+            
+            send(conn_s, message, strlen(message), 0);
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "q", 1) == 0)
         {
