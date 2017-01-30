@@ -96,12 +96,27 @@ int main(int argc, char *argv[]) {
     {
         /* Prompt user */
                 
-        printf("Enter command (s for sending message, t for sending file q to exit): \n");
+        printf("Enter command (s send message; t send file; q to exit): \n");
         fgets(buffer, MAX_LINE, stdin);
 
         if (strlen(buffer) == 2 && strncmp(buffer, "s", 1) == 0)
         {
-            printf("Enter message in form 'CAP\\nxxx\\n': \n");
+            printf("Enter message in form: \n");
+            fgets(buffer, MAX_LINE, stdin);
+            
+            /* Send message to server in the form "CAP\nxxx\n" */
+            char message[] = "CAP\n";
+            strcat(message, buffer);
+            strcat(message, "\n");
+            // Writeline(conn_s, buffer, strlen(buffer));
+            
+            
+            /* receive message from server */
+            // Readline(conn_s, buffer, MAX_LINE - 1);
+            
+            /* display the received message */
+            printf("Server Response: %s\n", message);
+
             
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "t", 1) == 0)
