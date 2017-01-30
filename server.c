@@ -156,16 +156,15 @@ int main(int argc, char *argv[]) {
                     char *filecontent = ReadFile(content);
                     if (filecontent)
                     {
-                        // send msg here
+                        // create and modify msg
                         char msg[strlen(filecontent)];
                         filecontent[strlen(filecontent) - 1] = '\0';
-                        printf("|||%s|||%d|||", filecontent, strlen(filecontent));
                         int char_in_file = strlen(filecontent);
                         sprintf(msg, "%d", char_in_file);
                         strcat(msg, "\n");
                         strcat(msg, filecontent);
 
-                        printf("|||||%s||||%d", msg, strlen(msg));
+                        // send message to client
                         send(conn_s, msg, strlen(msg), 0);
                         free(filecontent);
                     }
