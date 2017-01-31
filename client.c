@@ -161,7 +161,32 @@ int main(int argc, char *argv[]) {
 int ParseCmdLine(int argc, char *argv[], char **szAddress, char **szPort) {
 
     int n = 1;
+    char *endptr;
+    int ip, port;
 
+    if (argc == 3) {
+        //ip = strtol(argv[2], &endptr, 0);
+        //if (*endptr) {
+        //    fprintf(stderr, "SERVER: Invalid ip address.\n");
+        //    exit(EXIT_FAILURE);
+        //}
+        //else {
+            *szAddress = argv[2];
+        //}
+
+        port = strtol(argv[3], &endptr, 0);
+        if (*endptr) {
+            fprintf(stderr, "Server: invalid port number. \n");
+            exit(EXIT_FAILURE);
+        }
+        else
+        {
+            *szPort = argv[3];
+        }
+    }
+    return 0;
+}
+/*
     while ( n < argc ) {
         if ( !strncmp(argv[n], "-a", 2) || !strncmp(argv[n], "-A", 2) ) {
             *szAddress = argv[++n];
@@ -179,5 +204,5 @@ int ParseCmdLine(int argc, char *argv[], char **szAddress, char **szPort) {
 
     return 0;
 }
-
+*/
 
