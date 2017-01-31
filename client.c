@@ -14,11 +14,6 @@
 
 #include "helper.h"           /*  Our own helper functions  */
 
-/*  Function declarations  */
-
-int ParseCmdLine(int argc, char *argv[], char **szAddress, char **szPort);
-
-
 /*  main()  */
 
 int main(int argc, char *argv[]) {
@@ -34,23 +29,24 @@ int main(int argc, char *argv[]) {
 
     /*  Get command line arguments  */
 
-    // ParseCmdLine(argc, argv, &szAddress, &szPort);
     if (argc == 3) {
         /*  Set the remote port  */
         port = strtol(argv[2], &endptr, 0);
         if ( *endptr ) {
-            printf("ECHOCLNT: Invalid port supplied.\n");
+            printf("SERVER: Invalid port supplied.\n");
             exit(EXIT_FAILURE);
         }
-
-
+    }
+    else {
+        fprintf(stderr, "SERVER: Invalid arguments. Use the format <client> <server IP> <server Port> \n");
+        exit(EXIT_FAILURE);
     }
 
 
     /*  Create the listening socket  */
 
     if ( (conn_s = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
-        fprintf(stderr, "ECHOCLNT: Error creating listening socket.\n");
+        fprintf(stderr, "SERVER: Error creating listening socket.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -66,7 +62,7 @@ int main(int argc, char *argv[]) {
     /*  Set the remote IP address  */
 
     if ( inet_aton(argv[1], &servaddr.sin_addr) <= 0 ) {
-        printf("ECHOCLNT: Invalid remote IP address.\n");
+        printf("SERVER: Invalid remote IP address.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -74,7 +70,7 @@ int main(int argc, char *argv[]) {
     /*  connect() to the remote echo server  */
 
     if (connect(conn_s,(struct sockaddr *)&servaddr, sizeof(servaddr)) < 0 ) {
-        printf("ECHOCLNT: Error calling connect()\n");
+        printf("SERVER: Error calling connect()\n");
         exit(EXIT_FAILURE);
     }
 
@@ -157,28 +153,3 @@ int main(int argc, char *argv[]) {
 
     return EXIT_SUCCESS;
 }
-
-
-int ParseCmdLine(int argc, char *argv[], char **szAddress, char **szPort) {
-
-    int n = 1;
-
-    while ( n < argc ) {
-        if ( !strncmp(argv[n], "-a", 2) || !strncmp(argv[n], "-A", 2) ) {
-            *szAddress = argv[++n];
-        }
-        else if ( !strncmp(argv[n], "-p", 2) || !strncmp(argv[n], "-P", 2) ) {
-            *szPort = argv[++n];
-        }
-        else if ( !strncmp(argv[n], "-h", 2) || !strncmp(argv[n], "-H", 2) ) {
-            printf("Usage:\n\n");
-            printf("    timeclnt -a (remote IP) -p (remote port)\n\n");
-            exit(EXIT_SUCCESS);
-        }
-        ++n;
-    }
-
-    return 0;
-}
-
-
