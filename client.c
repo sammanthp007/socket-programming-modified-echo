@@ -34,15 +34,16 @@ int main(int argc, char *argv[]) {
 
     /*  Get command line arguments  */
 
-    ParseCmdLine(argc, argv, &szAddress, &szPort);
+    // ParseCmdLine(argc, argv, &szAddress, &szPort);
+    if (argc == 3) {
+        /*  Set the remote port  */
+        port = strtol(argv[2], &endptr, 0);
+        if ( *endptr ) {
+            printf("ECHOCLNT: Invalid port supplied.\n");
+            exit(EXIT_FAILURE);
+        }
 
 
-    /*  Set the remote port  */
-
-    port = strtol(szPort, &endptr, 0);
-    if ( *endptr ) {
-        printf("ECHOCLNT: Invalid port supplied.\n");
-        exit(EXIT_FAILURE);
     }
 
 
@@ -64,7 +65,7 @@ int main(int argc, char *argv[]) {
 
     /*  Set the remote IP address  */
 
-    if ( inet_aton(szAddress, &servaddr.sin_addr) <= 0 ) {
+    if ( inet_aton(argv[1], &servaddr.sin_addr) <= 0 ) {
         printf("ECHOCLNT: Invalid remote IP address.\n");
         exit(EXIT_FAILURE);
     }
@@ -81,16 +82,16 @@ int main(int argc, char *argv[]) {
     while (1)
     {
         /* Prompt user */
-                
+
         printf("Enter s for message; t for file; q to exit): \n");
         fgets(buffer, MAX_LINE, stdin);
 
         if (strlen(buffer) == 2 && strncmp(buffer, "s", 1) == 0)
         {
             printf("Enter message in form: \n");
-            // fgets also takes in the last \n 
+            // fgets also takes in the last \n
             fgets(buffer, MAX_LINE, stdin);
-           
+
             int buffer_len = strlen(buffer);
             buffer[buffer_len + 1] = '\0';
 
@@ -100,9 +101,9 @@ int main(int argc, char *argv[]) {
             strcat(message, buffer);
 
             message[buffer_len + 4] = '\0';
-            
+
             send(conn_s, message, strlen(message), 0);
-            
+
             /* receive message from server */
             int data_len = recv(conn_s, message, MAX_LINE + 10, 0);
 
@@ -113,9 +114,9 @@ int main(int argc, char *argv[]) {
         else if (strlen(buffer) == 2 && strncmp(buffer, "t", 1) == 0)
         {
             printf("Enter file name: \n");
-            // fgets also takes in the last \n 
+            // fgets also takes in the last \n
             fgets(buffer, MAX_LINE, stdin);
-           
+
             int buffer_len = strlen(buffer);
             buffer[buffer_len + 1] = '\0';
 
@@ -125,7 +126,7 @@ int main(int argc, char *argv[]) {
             strcat(message, buffer);
 
             message[buffer_len + 5] = '\0';
-            
+
             send(conn_s, message, strlen(message), 0);
 
             /* receive message from server */
@@ -141,16 +142,16 @@ int main(int argc, char *argv[]) {
         }
         else
         {
-        /*  Send string to echo server, and retrieve response  */
+            /*  Send string to echo server, and retrieve response  */
 
-        /* Writeline(conn_s, buffer, strlen(buffer)); */
-        /* Readline(conn_s, buffer, MAX_LINE-1); */
+            /* Writeline(conn_s, buffer, strlen(buffer)); */
+            /* Readline(conn_s, buffer, MAX_LINE-1); */
 
 
-        /*  Output echoed string  */
-        /* printf("%d <- buffer size\n", strlen(buffer)); */
+            /*  Output echoed string  */
+            /* printf("%d <- buffer size\n", strlen(buffer)); */
 
-        /* printf("Echo response: %s\n", buffer); */
+            /* printf("Echo response: %s\n", buffer); */
         }
     }
 
@@ -161,32 +162,7 @@ int main(int argc, char *argv[]) {
 int ParseCmdLine(int argc, char *argv[], char **szAddress, char **szPort) {
 
     int n = 1;
-    char *endptr;
-    int ip, port;
 
-    if (argc == 3) {
-        //ip = strtol(argv[2], &endptr, 0);
-        //if (*endptr) {
-        //    fprintf(stderr, "SERVER: Invalid ip address.\n");
-        //    exit(EXIT_FAILURE);
-        //}
-        //else {
-            *szAddress = argv[2];
-        //}
-
-        port = strtol(argv[3], &endptr, 0);
-        if (*endptr) {
-            fprintf(stderr, "Server: invalid port number. \n");
-            exit(EXIT_FAILURE);
-        }
-        else
-        {
-            *szPort = argv[3];
-        }
-    }
-    return 0;
-}
-/*
     while ( n < argc ) {
         if ( !strncmp(argv[n], "-a", 2) || !strncmp(argv[n], "-A", 2) ) {
             *szAddress = argv[++n];
@@ -204,5 +180,5 @@ int ParseCmdLine(int argc, char *argv[], char **szAddress, char **szPort) {
 
     return 0;
 }
-*/
+
 
