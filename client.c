@@ -113,11 +113,15 @@ int main(int argc, char *argv[]) {
             // fgets also takes in the last \n
             fgets(buffer, MAX_LINE, stdin);
 
+            // Save the name of the file for future use
+            char file_name[MAX_LINE];
+            strcpy(file_name, buffer);
             int buffer_len = strlen(buffer);
-            buffer[buffer_len + 1] = '\0';
+            file_name[buffer_len - 1] = '\0';
 
             /* Send message to server in the form "FILE\nxxx\n" */
             char message[MAX_LINE + 10];
+
             strcpy(message, "FILE\n");
             strcat(message, buffer);
 
@@ -130,24 +134,24 @@ int main(int argc, char *argv[]) {
 
             // because noise gets added during transmission
             message[data_len] = '\0';
-            printf("Server Response:\n%s\n", message);
+
+            // Find the just data section of the message
+            int ii = strcspn(message, "\n");
+            char just_data[data_len];
+            memcpy(just_data, &message[ii + 1], data_len - ii);
+            
+            //save the just the data to a file
+            FILE* dat = fopen(file_name, "wb");
+
+            fprintf(dat, just_data);
+            fclose(dat);
+
+            printf("Server has responded. The content of server response");
+            printf(" has been saved in %s successfully.\n", file_name);
         }
         else if (strlen(buffer) == 2 && strncmp(buffer, "q", 1) == 0)
         {
             return EXIT_SUCCESS;
-        }
-        else
-        {
-            /*  Send string to echo server, and retrieve response  */
-
-            /* Writeline(conn_s, buffer, strlen(buffer)); */
-            /* Readline(conn_s, buffer, MAX_LINE-1); */
-
-
-            /*  Output echoed string  */
-            /* printf("%d <- buffer size\n", strlen(buffer)); */
-
-            /* printf("Echo response: %s\n", buffer); */
         }
     }
 
